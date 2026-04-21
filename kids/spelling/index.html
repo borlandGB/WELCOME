@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Adrian's Spelling Test · Common Exception Words</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f0e8 0%, #e8e0d5 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #8b5e3c;
+            margin-bottom: 0.25rem;
+        }
+
+        .school-info {
+            color: #6b6255;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #6b6255;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #f0e8dc;
+            padding-bottom: 1rem;
+        }
+
+        .enable-voice-container {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: rgba(139,94,60,0.1);
+            border-radius: 1rem;
+        }
+
+        .enable-voice-btn {
+            background: linear-gradient(135deg, #8b5e3c, #a87b53);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .enable-voice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139,94,60,0.3);
+        }
+
+        .voice-status {
+            font-size: 0.8rem;
+            color: #6b6255;
+            margin-top: 0.5rem;
+        }
+
+        .question-area {
+            background: linear-gradient(135deg, #fefcf8, #faf8f4);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .question-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hint-text {
+            color: #8b5e3c;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            min-height: 3rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.2rem;
+            border: 2px solid #e0d5c8;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            font-family: monospace;
+            text-align: center;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #8b5e3c;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            flex: 1;
+            padding: 0.8rem;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #8b5e3c, #a87b53);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139,94,60,0.3);
+        }
+
+        .btn-speak {
+            background: #f0e8dc;
+            color: #4a4438;
+        }
+
+        .btn-speak:hover {
+            background: #e0d5c8;
+        }
+
+        .feedback {
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-top: 1rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .feedback.empty {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .correct-answer-display {
+            background: #fff3cd;
+            color: #856404;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        .progress {
+            margin-bottom: 1rem;
+            color: #6b6255;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .results {
+            text-align: center;
+        }
+
+        .score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #8b5e3c;
+            margin: 1rem 0;
+        }
+
+        .restart-btn {
+            background: #8b5e3c;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .personal-message {
+            background: rgba(139,94,60,0.1);
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #8b5e3c;
+        }
+
+        .quiz-hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .container { padding: 1rem; }
+            input { font-size: 1rem; }
+            .button-group { flex-direction: column; }
+            .question-icon { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <h1>Adrian's Spelling Test</h1>
+        <div class="school-info">St Mary's and St Peter's Church of England Primary School, Teddington · Class 4M</div>
+        <div class="subtitle">Common Exception Words</div>
+
+        <div class="enable-voice-container" id="enableVoiceContainer">
+            <button class="enable-voice-btn" id="enableVoiceBtn">Enable Voice</button>
+            <div class="voice-status">Tap to enable speech (required for iPhone)</div>
+        </div>
+
+        <div id="quiz-area" class="quiz-hidden">
+            <div class="progress" id="progress">Question 1 / 20</div>
+            <div class="question-area">
+                <div class="question-icon">🔊</div>
+                <div class="hint-text" id="hintText"></div>
+                <input type="text" id="answer" placeholder="Type your answer here..." autocomplete="off">
+                <div class="button-group">
+                    <button class="btn-speak" id="speakBtn">Listen Again</button>
+                    <button class="btn-submit" id="submitBtn">Check Answer</button>
+                </div>
+                <div id="feedback" class="feedback hidden"></div>
+                <div id="correctAnswerDisplay" class="correct-answer-display hidden"></div>
+            </div>
+            <div class="personal-message" id="personalMessage">
+                You've got this, Adrian! Take your time and listen carefully.
+            </div>
+        </div>
+
+        <div id="results-area" class="results hidden">
+            <h2>Test Complete, Adrian!</h2>
+            <div class="score" id="score">0 / 20</div>
+            <div id="message" class="feedback correct"></div>
+            <button class="restart-btn" id="restartBtn">Take Test Again</button>
+        </div>
+    </div>
+
+    <script>
+        // Word list with hints (never reveal the word itself)
+        const wordList = [
+            { word: "average", hint: "It means typical or normal, like the average score" },
+            { word: "category", hint: "A group or class of similar things" },
+            { word: "definite", hint: "Certain or sure, without any doubt" },
+            { word: "dictionary", hint: "A book that tells you what words mean" },
+            { word: "parliament", hint: "The group of people who make laws in some countries" },
+            { word: "temperature", hint: "How hot or cold something is" },
+            { word: "vegetable", hint: "A healthy food like carrot or broccoli" },
+            { word: "environment", hint: "The world around us, including nature" },
+            { word: "rhyme", hint: "When words sound the same, like 'cat' and 'hat'" },
+            { word: "rhythm", hint: "A regular pattern of sounds in music" },
+            { word: "twelfth", hint: "The number after eleventh" },
+            { word: "possess", hint: "To own or have something" },
+            { word: "disappear", hint: "To go away or vanish so you can't see it" },
+            { word: "separate", hint: "To move apart or divide into parts" },
+            { word: "certain", hint: "Absolutely sure, with no doubts" },
+            { word: "bicycle", hint: "A vehicle with two wheels that you pedal" },
+            { word: "according", hint: "As stated by someone, like 'according to the teacher'" },
+            { word: "attached", hint: "Connected or joined to something" },
+            { word: "determined", hint: "Firmly decided to do something" },
+            { word: "sincerely", hint: "In a genuine and honest way, often used in letters" },
+            { word: "achieve", hint: "To successfully accomplish a goal" },
+            { word: "conscience", hint: "Your inner voice telling you right from wrong" },
+            { word: "soldier", hint: "A person who serves in the army" },
+            { word: "sufficient", hint: "Enough, as much as needed" },
+            { word: "variety", hint: "Many different types of things" },
+            { word: "thorough", hint: "Complete and detailed, leaving nothing out" },
+            { word: "competition", hint: "An event where people try to win" },
+            { word: "piece", hint: "A part or portion of something" },
+            { word: "whether", hint: "Used to express a choice, like 'whether to go or stay'" },
+            { word: "reign", hint: "To rule as a king or queen" },
+            { word: "accompany", hint: "To go along with someone" },
+            { word: "aggressive", hint: "Ready to attack or act forcefully" },
+            { word: "appreciate", hint: "To be thankful or grateful for something" },
+            { word: "committee", hint: "A group of people chosen to do a task" },
+            { word: "communicate", hint: "To share information with others" },
+            { word: "community", hint: "A group of people living in the same area" },
+            { word: "embarrass", hint: "To feel shy or ashamed in front of others" },
+            { word: "interrupt", hint: "To break into a conversation or activity" },
+            { word: "necessary", hint: "Required or needed" },
+            { word: "occupy", hint: "To live in or take control of a place" },
+            { word: "opportunity", hint: "A good chance or favorable time to do something" },
+            { word: "programme", hint: "A planned series of events or a TV show" },
+            { word: "recommend", hint: "To suggest something as good" },
+            { word: "suggest", hint: "To put forward an idea" },
+            { word: "develop", hint: "To grow or improve over time" },
+            { word: "language", hint: "A system of speaking and writing" },
+            { word: "lightning", hint: "The flash of light in a storm" },
+            { word: "muscle", hint: "Body tissue that helps you move" },
+            { word: "persuade", hint: "To convince someone to do something" },
+            { word: "physical", hint: "Related to the body, not the mind" },
+            { word: "stomach", hint: "The organ where food goes after you eat" },
+            { word: "criticise", hint: "To point out what's wrong with something" },
+            { word: "leisure", hint: "Free time for relaxation and fun" },
+            { word: "neighbour", hint: "Someone who lives near you" },
+            { word: "recognise", hint: "To know something because you've seen it before" },
+            { word: "relevant", hint: "Closely connected to what's being discussed" },
+            { word: "signature", hint: "Your name written in your own special way" },
+            { word: "sincere", hint: "Genuine, honest, and not pretending" },
+            { word: "symbol", hint: "A picture or object that represents something else" },
+            { word: "system", hint: "A set of parts that work together" },
+            { word: "advice", hint: "A recommendation about what to do (noun)" },
+            { word: "advise", hint: "To recommend what someone should do (verb)" },
+            { word: "device", hint: "A tool or piece of equipment (noun)" },
+            { word: "devise", hint: "To plan or invent something (verb)" },
+            { word: "farther", hint: "A greater physical distance" },
+            { word: "father", hint: "A male parent" },
+            { word: "guessed", hint: "Past tense of guess, to give an answer without knowing" },
+            { word: "guest", hint: "A visitor" },
+            { word: "heard", hint: "Past tense of hear, to listen" },
+            { word: "herd", hint: "A group of animals" },
+            { word: "led", hint: "Past tense of lead, meaning guided" },
+            { word: "lead", hint: "To guide or be in front" },
+            { word: "morning", hint: "The early part of the day" },
+            { word: "mourning", hint: "Grieving for someone who died" },
+            { word: "past", hint: "Time that has already happened" },
+            { word: "passed", hint: "Went by or succeeded" },
+            { word: "practice", hint: "Repeating an activity to get better (noun)" },
+            { word: "practise", hint: "To do something repeatedly to improve (verb)" },
+            { word: "principal", hint: "The head of a school" },
+            { word: "principle", hint: "A basic truth or belief" },
+            { word: "proceed", hint: "To continue forward" },
+            { word: "precede", hint: "To come before something else" },
+            { word: "profit", hint: "Money gained after costs" },
+            { word: "prophet", hint: "Someone who predicts the future" },
+            { word: "prophecy", hint: "A prediction about the future (noun)" },
+            { word: "prophesy", hint: "To predict the future (verb)" },
+            { word: "stationary", hint: "Not moving" },
+            { word: "stationery", hint: "Writing materials like paper and pens" },
+            { word: "steal", hint: "To take something without permission" },
+            { word: "steel", hint: "A strong metal" },
+            { word: "who's", hint: "Short for 'who is' or 'who has'" },
+            { word: "whose", hint: "Shows ownership, like 'whose book'" }
+        ];
+
+        // Game state
+        let selectedWords = [];
+        let currentIndex = 0;
+        let correctCount = 0;
+        let gameActive = true;
+        let waitingForNext = false;
+        let currentWordObj = null;
+        let voiceEnabled = false;
+        const NUM_QUESTIONS = 20;
+
+        // DOM elements
+        const enableVoiceContainer = document.getElementById('enableVoiceContainer');
+        const enableVoiceBtn = document.getElementById('enableVoiceBtn');
+        const quizArea = document.getElementById('quiz-area');
+        const resultsArea = document.getElementById('results-area');
+        const progressDiv = document.getElementById('progress');
+        const hintText = document.getElementById('hintText');
+        const answerInput = document.getElementById('answer');
+        const submitBtn = document.getElementById('submitBtn');
+        const speakBtn = document.getElementById('speakBtn');
+        const feedbackDiv = document.getElementById('feedback');
+        const correctAnswerDisplay = document.getElementById('correctAnswerDisplay');
+        const scoreDiv = document.getElementById('score');
+        const messageDiv = document.getElementById('message');
+        const restartBtn = document.getElementById('restartBtn');
+        const personalMessage = document.getElementById('personalMessage');
+
+        // Encouraging messages (no emojis for iOS)
+        const encouragementMessages = [
+            "You've got this, Adrian!",
+            "Keep going! You're doing great!",
+            "Listen carefully, you know this!",
+            "Focus up! Next word coming...",
+            "You're a spelling star!",
+            "Take your time, Adrian!",
+            "You're doing brilliantly!",
+            "Remember to listen carefully!"
+        ];
+
+        function updatePersonalMessage() {
+            const randomIndex = Math.floor(Math.random() * encouragementMessages.length);
+            personalMessage.textContent = encouragementMessages[randomIndex];
+        }
+
+        // Web Speech API - clean text without emojis
+        function speak(text, onComplete) {
+            if (!voiceEnabled) {
+                if (onComplete) onComplete();
+                return;
+            }
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const cleanText = text.replace(/[^\w\s.,!?']/g, '');
+                const utterance = new SpeechSynthesisUtterance(cleanText);
+                utterance.rate = 0.85;
+                utterance.pitch = 1;
+                
+                if (onComplete) {
+                    utterance.onend = onComplete;
+                }
+                
+                window.speechSynthesis.speak(utterance);
+            } else if (onComplete) {
+                onComplete();
+            }
+        }
+
+        // Enable voice on iOS
+        function enableVoice() {
+            voiceEnabled = true;
+            
+            if ('speechSynthesis' in window) {
+                const testUtterance = new SpeechSynthesisUtterance(' ');
+                testUtterance.rate = 0.85;
+                window.speechSynthesis.speak(testUtterance);
+            }
+            
+            enableVoiceContainer.classList.add('hidden');
+            quizArea.classList.remove('quiz-hidden');
+            restartGame();
+        }
+
+        function askQuestion() {
+            if (waitingForNext) return;
+            if (currentIndex >= selectedWords.length) {
+                endGame();
+                return;
+            }
+
+            currentWordObj = selectedWords[currentIndex];
+            
+            answerInput.value = "";
+            answerInput.focus();
+            feedbackDiv.classList.add('hidden');
+            correctAnswerDisplay.classList.add('hidden');
+            updatePersonalMessage();
+            
+            hintText.textContent = currentWordObj.hint;
+            progressDiv.textContent = `Question ${currentIndex + 1} / ${selectedWords.length}`;
+            
+            // Speak the word
+            speak(currentWordObj.word);
+        }
+
+        function checkAnswer() {
+            if (!gameActive || waitingForNext) return;
+            
+            const userAnswer = answerInput.value.trim();
+            
+            if (userAnswer === "") {
+                feedbackDiv.textContent = "Please type your answer before checking!";
+                feedbackDiv.className = "feedback empty";
+                feedbackDiv.classList.remove('hidden');
+                answerInput.focus();
+                return;
+            }
+            
+            const userAnswerLower = userAnswer.toLowerCase();
+            const correctWordLower = currentWordObj.word.toLowerCase();
+            
+            if (userAnswerLower === correctWordLower) {
+                // Correct!
+                correctCount++;
+                feedbackDiv.textContent = "Well done, Adrian! That's correct!";
+                feedbackDiv.className = "feedback correct";
+                feedbackDiv.classList.remove('hidden');
+                correctAnswerDisplay.classList.add('hidden');
+                
+                waitingForNext = true;
+                
+                // Speak praise and move to next word when done
+                speak("Well done! That's correct!", function() {
+                    currentIndex++;
+                    waitingForNext = false;
+                    if (currentIndex < selectedWords.length) {
+                        askQuestion();
+                    } else {
+                        endGame();
+                    }
+                });
+                
+            } else {
+                // Incorrect
+                feedbackDiv.textContent = "Not quite, Adrian. Keep practicing!";
+                feedbackDiv.className = "feedback incorrect";
+                feedbackDiv.classList.remove('hidden');
+                
+                correctAnswerDisplay.textContent = "Correct spelling: " + currentWordObj.word;
+                correctAnswerDisplay.classList.remove('hidden');
+                
+                waitingForNext = true;
+                setTimeout(() => {
+                    currentIndex++;
+                    waitingForNext = false;
+                    if (currentIndex < selectedWords.length) {
+                        askQuestion();
+                    } else {
+                        endGame();
+                    }
+                }, 3500);
+            }
+        }
+
+        function endGame() {
+            gameActive = false;
+            quizArea.classList.add('hidden');
+            resultsArea.classList.remove('hidden');
+            
+            scoreDiv.textContent = `${correctCount} / ${selectedWords.length}`;
+            
+            let message = "";
+            if (correctCount === selectedWords.length) {
+                message = "Perfect score, Adrian! You're a spelling champion!";
+            } else if (correctCount >= selectedWords.length * 0.8) {
+                message = "Fantastic job, Adrian! You did really well!";
+            } else if (correctCount >= selectedWords.length * 0.5) {
+                message = "Good effort, Adrian! Keep practicing and you'll get even better!";
+            } else {
+                message = "Don't give up, Adrian! Practice makes perfect. Try again!";
+            }
+            messageDiv.textContent = message;
+            speak(message);
+        }
+
+        function restartGame() {
+            const shuffled = [...wordList];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            selectedWords = shuffled.slice(0, NUM_QUESTIONS);
+            currentIndex = 0;
+            correctCount = 0;
+            gameActive = true;
+            waitingForNext = false;
+            
+            quizArea.classList.remove('hidden');
+            resultsArea.classList.add('hidden');
+            
+            askQuestion();
+        }
+
+        // Event listeners
+        enableVoiceBtn.addEventListener('click', enableVoice);
+        submitBtn.addEventListener('click', checkAnswer);
+        speakBtn.addEventListener('click', () => {
+            if (!gameActive || waitingForNext) return;
+            if (currentWordObj) {
+                speak(currentWordObj.word);
+            }
+        });
+        restartBtn.addEventListener('click', () => {
+            if (voiceEnabled) {
+                restartGame();
+            }
+        });
+        
+        answerInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !waitingForNext && gameActive && voiceEnabled) {
+                checkAnswer();
+            }
+        });
+    </script>
+</body>
+</html>

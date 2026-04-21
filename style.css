@@ -1,0 +1,65 @@
+body {
+  font-family: Arial;
+  margin: 0;
+  background: #f5f5f5;
+}
+
+/* 🔴 STATUS BAR */
+.status-bar {
+  position: sticky;
+  top: 0;
+  background: #222;
+  color: white;
+  padding: 15px;
+  z-index: 1000;
+}
+
+.status-bar h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.2em;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  font-size: 0.95em;
+}
+
+/* MAIN CONTENT */
+main {
+  padding: 15px;
+}
+
+.section {
+  background: white;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+}
+
+.control-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #4CAF50;
+  color: white;
+  font-size: 1em;
+}
+
+button:disabled {
+  background: grey;
+}
+
+/* 📱 MOBILE */
+@media (max-width: 480px) {
+  .control-row {
+    flex-direction: column;
+  }
+}

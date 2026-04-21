@@ -552,6 +552,11 @@
                     <span class="nav-label">Finance App</span>
                     <span class="nav-badge">live</span>
                 </a>
+    		<a href="#" class="nav-item" data-page="kids" data-url="/kids">
+        	    <span class="nav-icon">🧒</span>
+        	    <span class="nav-label">Kids Projects</span>
+        	    <span class="nav-badge">new</span>
+    		</a>
 
                 <div class="nav-section-title">COMING SOON</div>
 
@@ -559,6 +564,20 @@
                     <span class="nav-icon">📄</span>
                     <span class="nav-label">CV</span>
                 </a>
+
+		<!-- NEW: CNC Projects -->
+    		<a href="#" class="nav-item inactive" data-page="cnc" data-url="/cnc">
+        	    <span class="nav-icon">⚙️</span>
+        	    <span class="nav-label">CNC Projects</span>
+        	    <span class="nav-badge">soon</span>
+    		</a>
+
+    		<!-- NEW: 3D Printing (greyed out) -->
+    		<a href="#" class="nav-item inactive">
+        	    <span class="nav-icon">🖨️</span>
+        	    <span class="nav-label">3D Printing</span>
+        	    <span class="nav-badge">soon</span>
+    		</a>
 
                 <a href="#" class="nav-item inactive">
                     <span class="nav-icon">🖼️</span>
@@ -573,7 +592,7 @@
                 <a href="#" class="nav-item" data-page="cheatsheet" data-url="/cheatsheet">
                     <span class="nav-icon">📚</span>
                     <span class="nav-label">Cheatsheet</span>
-		    <span class="nav-badge">live</span>
+		    <span class="nav-badge">beta</span>
                 </a>
             </div>
 
@@ -602,16 +621,16 @@
                         
                         <div class="stats-grid">
                             <div class="stat-card">
-                                <div class="stat-number">2</div>
+                                <div class="stat-number">3</div>
                                 <div class="stat-label">active projects</div>
                             </div>
                             <div class="stat-card">
-                                <div class="stat-number">4</div>
+                                <div class="stat-number">5</div>
                                 <div class="stat-label">in the pipeline</div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-number">✓</div>
-                                <div class="stat-label">always on</div>
+                                <div class="stat-label">Home server on</div>
                             </div>
                         </div>
                     </div>
@@ -621,12 +640,13 @@
                         <div class="action-buttons">
                             <button class="action-btn" onclick="loadProject('/irrigation', 'irrigation')">💧 irrigation system</button>
                             <button class="action-btn" onclick="loadProject('/finance', 'finance')">💰 finance app</button>
+			    <button class="action-btn" onclick="loadProject('/kids', 'kids')">🧒 kids projects</button>
                             <button class="action-btn" disabled>📄 cv (coming soon)</button>
                         </div>
                     </div>
 
                     <div class="tip-box">
-                        📌 Main code to add into sidebar: <code>/var/www/html/index.html</code>
+                        📌 NOTA BENE: <code>/var/www/html/index.html</code>
                     </div>
                 </div>
 

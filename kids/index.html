@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Kids Projects · Nick</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f0e8 0%, #e8e0d5 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #8b5e3c, #c4a47a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #6b6255;
+            font-size: 0.9rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: #2c2c2c;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            display: block;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(139,94,60,0.15);
+        }
+
+        .project-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-card h2 {
+            color: #8b5e3c;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .project-card p {
+            color: #6b6255;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #8b5e3c;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            background: white;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: #8b5e3c;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .header { padding: 1.5rem; }
+            .header h1 { font-size: 1.5rem; }
+            .projects-grid { gap: 1rem; }
+            .project-card { padding: 1rem; }
+            .project-icon { font-size: 2rem; }
+            .project-card h2 { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧒 Kids Projects</h1>
+            <p>Fun and educational projects</p>
+        </div>
+
+        <div class="projects-grid">
+            <a href="/kids/lift" class="project-card">
+                <div class="project-icon">🏗️</div>
+                <h2>Arduino 3 Floor Lift</h2>
+                <p>Learn how a lift works with Arduino. Control floor calls, LED indicators, and motor control simulation.</p>
+            </a>
+
+            <a href="/kids/spelling" class="project-card">
+                <div class="project-icon">📝</div>
+                <h2>Spelling - Common Exception Words Y5</h2>
+                <p>Practice spelling tricky words with voice guidance. Words like 'separate', 'necessary', and 'rhythm'.</p>
+            </a>
+        </div>
+
+        <!-- FIX: target="_top" breaks out of any iframe -->
+        <a href="/" class="back-link" target="_top">← Back to Dashboard</a>
+    </div>
+</body>
+</html>
