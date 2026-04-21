@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Nick · Cheatsheet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f0e8 0%, #e8e0d5 100%);
+            color: #2c2c2c;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, #8b5e3c, #c4a47a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .home-link {
+            color: #8b5e3c;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .home-link:hover {
+            text-decoration: underline;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: rgba(255,255,255,0.5);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .tab-btn {
+            background: white;
+            border: 1px solid rgba(139,94,60,0.2);
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #4a4438;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(139,94,60,0.1);
+            border-color: #8b5e3c;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #8b5e3c, #a87b53);
+            border-color: transparent;
+            color: white;
+        }
+
+        .content-area {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .topic-content {
+            display: none;
+            background: white;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            animation: fadeIn 0.2s ease;
+        }
+
+        .topic-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .topic-content h2 {
+            color: #8b5e3c;
+            margin-bottom: 1.2rem;
+            font-size: 1.5rem;
+            border-bottom: 2px solid #f0e8dc;
+            padding-bottom: 0.5rem;
+        }
+
+        .command-block {
+            background: #2c2c2c;
+            color: #e8e0d5;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0 0.5rem 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        }
+
+        .desc {
+            color: #6b6255;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            padding-left: 0.8rem;
+            border-left: 3px solid #c4a47a;
+        }
+
+        @media (max-width: 768px) {
+            .header { padding: 0.8rem 1rem; }
+            .header h1 { font-size: 1.2rem; }
+            .tabs { padding: 0.8rem 1rem; }
+            .tab-btn { padding: 0.4rem 0.9rem; font-size: 0.75rem; }
+            .content-area { padding: 1rem; }
+            .topic-content { padding: 1rem; }
+            .topic-content h2 { font-size: 1.2rem; }
+            .command-block { font-size: 0.7rem; }
+            .desc { font-size: 0.75rem; }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #ede6db; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #c4a47a; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📚 Cheatsheet</h1>
+        <a href="/" target="_blank" class="home-link">← Home</a>
+    </div>
+
+    <div class="tabs" id="tabs"></div>
+
+    <div class="content-area" id="content-area"></div>
+
+    <script>
+        const cheatsheets = {
+            github: {
+                name: "🐙 GitHub",
+                commands: [
+                    { cmd: "git status", desc: "Check current branch status and see what's changed" },
+                    { cmd: "git add .", desc: "Stage all changes for commit" },
+                    { cmd: "git commit -m \"your message\"", desc: "Commit staged changes with a message" },
+                    { cmd: "git push origin main", desc: "Push commits to remote repository" },
+                    { cmd: "git pull origin main", desc: "Pull latest changes from remote" },
+                    { cmd: "git log --oneline", desc: "View commit history in compact format" },
+                    { cmd: "git branch", desc: "List all branches" },
+                    { cmd: "git checkout -b new-branch", desc: "Create and switch to a new branch" },
+                    { cmd: "git merge branch-name", desc: "Merge another branch into current" }
+                ]
+            },
+            jetson: {
+                name: "🚀 Jetson Orin",
+                commands: [
+                    { cmd: "sudo jetson_clocks", desc: "Set max clock speeds for performance" },
+                    { cmd: "tegrastats", desc: "Monitor system stats (CPU/GPU/memory/temperature)" },
+                    { cmd: "sudo nvpmodel -q", desc: "Check current power mode" },
+                    { cmd: "sudo nvpmodel -m 0", desc: "Set to MAX performance mode" },
+                    { cmd: "sudo nvpmodel -m 1", desc: "Set to power saving mode" },
+                    { cmd: "jtop", desc: "Interactive Jetson monitoring tool" },
+                    { cmd: "sudo jetson_release", desc: "Show Jetson software versions" }
+                ]
+            },
+            linux: {
+                name: "🐧 Linux",
+                commands: [
+                    { cmd: "ls -la", desc: "List all files with details" },
+                    { cmd: "cd /path", desc: "Change directory" },
+                    { cmd: "pwd", desc: "Print working directory" },
+                    { cmd: "cp source dest", desc: "Copy files" },
+                    { cmd: "mv source dest", desc: "Move or rename files" },
+                    { cmd: "rm -rf folder", desc: "Remove folder recursively (careful!)" },
+                    { cmd: "chmod +x script.sh", desc: "Make script executable" },
+                    { cmd: "ps aux | grep process", desc: "Find running process" },
+                    { cmd: "kill -9 PID", desc: "Force kill process by ID" },
+                    { cmd: "df -h", desc: "Check disk space" },
+                    { cmd: "free -h", desc: "Check RAM usage" },
+                    { cmd: "top", desc: "Real-time system processes" },
+                    { cmd: "sudo !!", desc: "Run last command with sudo" }
+                ]
+            },
+            python: {
+                name: "🐍 Python",
+                commands: [
+                    { cmd: "python3 script.py", desc: "Run Python script" },
+                    { cmd: "pip install package", desc: "Install Python package" },
+                    { cmd: "pip freeze > requirements.txt", desc: "Save all installed packages" },
+                    { cmd: "pip install -r requirements.txt", desc: "Install from requirements file" },
+                    { cmd: "python3 -m venv venv", desc: "Create virtual environment" },
+                    { cmd: "source venv/bin/activate", desc: "Activate virtual environment" },
+                    { cmd: "deactivate", desc: "Exit virtual environment" }
+                ]
+            },
+            flask: {
+                name: "🌶️ Flask",
+                commands: [
+                    { cmd: "export FLASK_APP=app.py", desc: "Set Flask app entry point" },
+                    { cmd: "export FLASK_ENV=development", desc: "Enable debug mode" },
+                    { cmd: "flask run --host=0.0.0.0 --port=5000", desc: "Run Flask on all interfaces" },
+                    { cmd: "@app.route('/path')", desc: "Flask route decorator" },
+                    { cmd: "render_template('file.html')", desc: "Render HTML template" },
+                    { cmd: "request.args.get('key')", desc: "Get URL parameter" },
+                    { cmd: "request.form['key']", desc: "Get form data" },
+                    { cmd: "return jsonify(data)", desc: "Return JSON response" }
+                ]
+            },
+            nginx: {
+                name: "🖧 Nginx",
+                commands: [
+                    { cmd: "sudo systemctl restart nginx", desc: "Restart Nginx" },
+                    { cmd: "sudo nginx -t", desc: "Test configuration syntax" },
+                    { cmd: "sudo systemctl status nginx", desc: "Check Nginx status" },
+                    { cmd: "sudo journalctl -u nginx -f", desc: "View Nginx logs in real-time" },
+                    { cmd: "ls /etc/nginx/sites-enabled/", desc: "List enabled sites" },
+                    { cmd: "sudo nano /etc/nginx/sites-available/default", desc: "Edit main config" },
+                    { cmd: "sudo systemctl reload nginx", desc: "Reload config without full restart" }
+                ]
+            },
+            html: {
+                name: "🌐 HTML/CSS",
+                commands: [
+                    { cmd: "<div class=\"name\">content</div>", desc: "Div container with class" },
+                    { cmd: "display: flex;", desc: "Flexbox layout" },
+                    { cmd: "flex: 1;", desc: "Fill remaining space" },
+                    { cmd: "padding: 1rem;", desc: "Inner spacing" },
+                    { cmd: "margin: 1rem;", desc: "Outer spacing" },
+                    { cmd: "@media (max-width: 768px) {}", desc: "Mobile responsive" },
+                    { cmd: "background: linear-gradient(135deg, #color1, #color2)", desc: "Gradient background" }
+                ]
+            },
+            webserver: {
+                name: "⚙️ Web Server",
+                commands: [
+                    { cmd: "/var/www/html/", desc: "Default web root directory" },
+                    { cmd: "deiba.duckdns.org", desc: "Your domain" },
+                    { cmd: "sudo chown -R www-data:www-data /var/www/html", desc: "Set proper permissions" },
+                    { cmd: "sudo chmod -R 755 /var/www/html", desc: "Set folder permissions" }
+                ]
+            },
+            firewall: {
+                name: "🛡️ Firewall",
+                commands: [
+                    { cmd: "sudo ufw status", desc: "Check firewall status" },
+                    { cmd: "sudo ufw allow 80/tcp", desc: "Allow HTTP traffic" },
+                    { cmd: "sudo ufw allow 443/tcp", desc: "Allow HTTPS traffic" },
+                    { cmd: "sudo ufw allow 22/tcp", desc: "Allow SSH" },
+                    { cmd: "sudo ufw allow 5000/tcp", desc: "Allow Flask default port" },
+                    { cmd: "sudo ufw enable", desc: "Enable firewall" },
+                    { cmd: "sudo ufw disable", desc: "Disable firewall" }
+                ]
+            },
+            backend: {
+                name: "🗄️ Backend",
+                commands: [
+                    { cmd: "REST API", desc: "GET, POST, PUT, DELETE endpoints" },
+                    { cmd: "@app.route('/api/data', methods=['GET'])", desc: "Flask API endpoint" },
+                    { cmd: "return jsonify(data)", desc: "Return JSON response" },
+                    { cmd: "request.get_json()", desc: "Parse JSON request body" }
+                ]
+            },
+            frontend: {
+                name: "🎨 Frontend",
+                commands: [
+                    { cmd: "fetch('/api/data').then(r=>r.json())", desc: "Fetch API call" },
+                    { cmd: "addEventListener('click', function)", desc: "Handle click events" },
+                    { cmd: "localStorage.setItem('key', 'value')", desc: "Save to local storage" },
+                    { cmd: "console.log(data)", desc: "Debug in browser console" },
+                    { cmd: "document.getElementById('id')", desc: "Select DOM element" }
+                ]
+            },
+            esp32: {
+                name: "📡 ESP32",
+                commands: [
+                    { cmd: "WiFi.begin(ssid, password)", desc: "Connect to WiFi" },
+                    { cmd: "WiFi.status() == WL_CONNECTED", desc: "Check WiFi connection" },
+                    { cmd: "HTTPClient http;", desc: "Create HTTP client" },
+                    { cmd: "http.begin(url)", desc: "Start HTTP request" },
+                    { cmd: "int httpCode = http.GET()", desc: "Send GET request" },
+                    { cmd: "http.getString()", desc: "Get response as string" }
+                ]
+            }
+        };
+
+        const tabsContainer = document.getElementById('tabs');
+        const contentArea = document.getElementById('content-area');
+        
+        let activeTopic = 'github';
+
+        function renderContent(topicId) {
+            const topic = cheatsheets[topicId];
+            if (!topic) return;
+            
+            let html = `<div class="topic-content active" id="topic-${topicId}">
+                <h2>${topic.name}</h2>`;
+            
+            topic.commands.forEach(cmd => {
+                html += `
+                    <div class="command-block">${escapeHtml(cmd.cmd)}</div>
+                    <div class="desc">${escapeHtml(cmd.desc)}</div>
+                `;
+            });
+            
+            html += `</div>`;
+            contentArea.innerHTML = html;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        Object.keys(cheatsheets).forEach(key => {
+            const btn = document.createElement('button');
+            btn.className = 'tab-btn';
+            if (key === activeTopic) btn.classList.add('active');
+            btn.textContent = cheatsheets[key].name;
+            btn.onclick = () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeTopic = key;
+                renderContent(key);
+            };
+            tabsContainer.appendChild(btn);
+        });
+
+        renderContent('github');
+    </script>
+</body>
+</html>

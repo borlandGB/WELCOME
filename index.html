@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Nick · Projects Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f0e8 0%, #e8e0d5 100%);
+            color: #2c2c2c;
+            font-size: 18px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ========== MOBILE MENU BUTTON ========== */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+            background: linear-gradient(135deg, #8b5e3c, #a87b53);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+
+        /* ========== LEFT SIDEBAR ========== */
+        .sidebar {
+            width: 320px;
+            background: linear-gradient(180deg, #ffffff 0%, #faf8f4 100%);
+            border-right: 1px solid rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+            flex-shrink: 0;
+            box-shadow: 2px 0 12px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease;
+        }
+
+        /* Mobile sidebar - hidden by default */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 1000;
+                transform: translateX(-100%);
+                width: 280px;
+                box-shadow: 2px 0 20px rgba(0,0,0,0.2);
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            /* Overlay when sidebar is open */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 999;
+            }
+            
+            .sidebar-overlay.active {
+                display: block;
+            }
+        }
+
+        .sidebar-header {
+            padding: 2rem 1.8rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #fefefe, #faf8f4);
+        }
+
+        .sidebar-header h2 {
+            font-size: 2rem;
+            color: #2c2c2c;
+            font-weight: 600;
+        }
+
+        .sidebar-header h2 span {
+            background: linear-gradient(135deg, #8b5e3c, #c4a47a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .sidebar-header p {
+            font-size: 0.8rem;
+            color: #8a7f6e;
+            margin-top: 0.5rem;
+        }
+
+        /* Mobile close button inside sidebar */
+        .mobile-close {
+            display: none;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #8a7f6e;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-close {
+                display: block;
+            }
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 0 1rem 1rem 1rem;
+        }
+
+        .nav-section-title {
+            padding: 0 1rem 0.6rem 1rem;
+            font-size: 0.7rem;
+            color: #a89f8f;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-top: 1rem;
+            text-transform: uppercase;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 0.75rem;
+            color: #4a4438;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            background: transparent;
+        }
+
+        .nav-item:hover {
+            background: rgba(139, 94, 60, 0.08);
+            color: #8b5e3c;
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #8b5e3c, #a87b53);
+            color: white;
+            box-shadow: 0 4px 12px rgba(139, 94, 60, 0.25);
+        }
+
+        .nav-item.inactive {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        .nav-item.inactive:hover {
+            background: transparent;
+            transform: none;
+            color: #4a4438;
+        }
+
+        .nav-icon {
+            font-size: 1.3rem;
+            width: 32px;
+            text-align: center;
+        }
+
+        .nav-label {
+            flex: 1;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .nav-badge {
+            font-size: 0.65rem;
+            background: rgba(139, 94, 60, 0.15);
+            color: #8b5e3c;
+            padding: 0.2rem 0.6rem;
+            border-radius: 1rem;
+            font-weight: 500;
+        }
+
+        .nav-item.active .nav-badge {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+        }
+
+        .sidebar-footer {
+            padding: 1.5rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            font-size: 0.7rem;
+            color: #a89f8f;
+        }
+
+        /* ========== MAIN CONTENT AREA ========== */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            background: #faf8f4;
+        }
+
+        .welcome-header {
+            background: linear-gradient(135deg, #ffffff, #f5f0e8);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+ 	   .welcome-header {
+        	text-align: center;
+   	     	padding: 1rem 3rem 1rem 3rem;
+    	    }
+    .	    .welcome-header h1 {
+       	 	font-size: 1.3rem;
+    	    }
+	}
+
+        .welcome-header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+            color: #2c2c2c;
+        }
+
+        .welcome-header .greeting {
+            background: linear-gradient(135deg, #8b5e3c, #c4a47a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+        }
+
+        .welcome-header p {
+            color: #8a7f6e;
+            margin-top: 0.3rem;
+            font-size: 0.85rem;
+        }
+
+        /* Content wrapper */
+        .content-wrapper {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+
+        /* Dashboard content */
+        .dashboard-view {
+            padding: 2rem;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-view {
+                padding: 1rem;
+            }
+        }
+
+        .dashboard-view.hide {
+            display: none;
+        }
+
+        /* Project iframe - FULL SIZE */
+        .project-view {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            background: #ffffff;
+        }
+
+        .project-view.active {
+            display: block;
+        }
+
+        .project-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: white;
+        }
+
+        /* Loading indicator */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #8a7f6e;
+            z-index: 10;
+            display: none;
+            background: rgba(250, 248, 244, 0.95);
+            padding: 1.5rem 2rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(8px);
+            font-weight: 500;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        /* Card styles */
+        .welcome-card {
+            background: linear-gradient(135deg, #ffffff, #fefcf8);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+        }
+
+        @media (max-width: 768px) {
+            .welcome-card {
+                padding: 1rem;
+            }
+            .welcome-card h2 {
+                font-size: 1.2rem;
+            }
+        }
+
+        .welcome-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #2c2c2c;
+        }
+
+        .welcome-card p {
+            font-size: 0.9rem;
+            color: #6b6255;
+            line-height: 1.4;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+            }
+        }
+
+        .stat-card {
+            background: #ffffff;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #8b5e3c, #c4a47a);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .stat-number {
+                font-size: 1.3rem;
+            }
+            .stat-label {
+                font-size: 0.7rem;
+            }
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #8a7f6e;
+            margin-top: 0.3rem;
+        }
+
+        .quick-actions {
+            background: #ffffff;
+            border-radius: 1rem;
+            padding: 1.2rem;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        @media (max-width: 768px) {
+            .quick-actions {
+                padding: 1rem;
+            }
+            .quick-actions h3 {
+                font-size: 1rem;
+            }
+        }
+
+        .quick-actions h3 {
+            margin-bottom: 1rem;
+            color: #2c2c2c;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #f5f0e8, #ede6db);
+            border: 1px solid rgba(139, 94, 60, 0.15);
+            padding: 0.6rem 1.2rem;
+            border-radius: 0.6rem;
+            color: #4a4438;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+ 	   .sidebar-header {
+        	text-align: center;
+        	padding: 1.5rem 1rem;
+	    }
+    	    .sidebar-header h2 {
+        	font-size: 1.5rem;
+    	    }
+    	    .sidebar-header p {
+       	 	font-size: 0.7rem;
+    	    }
+	}
+
+        .action-btn:hover {
+            background: linear-gradient(135deg, #8b5e3c, #a87b53);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .action-btn:disabled:hover {
+            background: linear-gradient(135deg, #f5f0e8, #ede6db);
+            color: #4a4438;
+            transform: none;
+        }
+
+        .tip-box {
+            margin-top: 1.5rem;
+            padding: 0.8rem 1rem;
+            background: rgba(139, 94, 60, 0.05);
+            border-radius: 0.5rem;
+            border-left: 3px solid #c4a47a;
+            font-size: 0.75rem;
+            color: #6b6255;
+        }
+
+        .tip-box code {
+            background: rgba(0, 0, 0, 0.04);
+            padding: 0.1rem 0.3rem;
+            border-radius: 0.3rem;
+            font-size: 0.7rem;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ede6db;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c4a47a;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hamburger Menu Button (mobile only) -->
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="app-container">
+        <!-- LEFT SIDEBAR MENU -->
+        <div class="sidebar" id="sidebar">
+            <button class="mobile-close" id="closeSidebar">✕</button>
+            <div class="sidebar-header">
+                <h2>Nick's<span></span></h2>
+                <p>personal projects page</p>
+            </div>
+
+            <div class="nav-menu">
+                <div class="nav-section-title">PROJECTS</div>
+                
+                <a href="#" class="nav-item active" data-page="dashboard">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-label">Dashboard</span>
+                </a>
+
+                <a href="#" class="nav-item" data-page="irrigation" data-url="/irrigation">
+                    <span class="nav-icon">💧</span>
+                    <span class="nav-label">Irrigation</span>
+                    <span class="nav-badge">active</span>
+                </a>
+
+                <a href="#" class="nav-item" data-page="finance" data-url="/finance">
+                    <span class="nav-icon">💰</span>
+                    <span class="nav-label">Finance App</span>
+                    <span class="nav-badge">live</span>
+                </a>
+
+                <div class="nav-section-title">COMING SOON</div>
+
+                <a href="#" class="nav-item inactive">
+                    <span class="nav-icon">📄</span>
+                    <span class="nav-label">CV</span>
+                </a>
+
+                <a href="#" class="nav-item inactive">
+                    <span class="nav-icon">🖼️</span>
+                    <span class="nav-label">Photo Gallery</span>
+                </a>
+
+                <a href="#" class="nav-item inactive">
+                    <span class="nav-icon">📁</span>
+                    <span class="nav-label">FTP Server</span>
+                </a>
+
+                <a href="#" class="nav-item" data-page="cheatsheet" data-url="/cheatsheet">
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-label">Cheatsheet</span>
+		    <span class="nav-badge">live</span>
+                </a>
+            </div>
+
+            <div class="sidebar-footer">
+                <div>⚡ full control · anywhere access</div>
+                <div style="margin-top: 0.3rem;">📡 live from jetson</div>
+            </div>
+        </div>
+
+        <!-- MAIN CONTENT AREA -->
+        <div class="main-content">
+            <div class="welcome-header">
+                <h1>    Welcome <span class="greeting"></span></h1>
+                <p id="timestamp"></p>
+            </div>
+
+            <div class="content-wrapper">
+                <div class="loading" id="loading">
+                    <div>✨ Loading project...</div>
+                </div>
+
+                <div class="dashboard-view" id="dashboard-view">
+                    <div class="welcome-card">
+                        <h2>🎯 COMMAND CENTRE</h2>
+                        <p>Select any project from the sidebar </p>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">2</div>
+                                <div class="stat-label">active projects</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">4</div>
+                                <div class="stat-label">in the pipeline</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">✓</div>
+                                <div class="stat-label">always on</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions">
+                        <h3>⚡ quick access</h3>
+                        <div class="action-buttons">
+                            <button class="action-btn" onclick="loadProject('/irrigation', 'irrigation')">💧 irrigation system</button>
+                            <button class="action-btn" onclick="loadProject('/finance', 'finance')">💰 finance app</button>
+                            <button class="action-btn" disabled>📄 cv (coming soon)</button>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        📌 Main code to add into sidebar: <code>/var/www/html/index.html</code>
+                    </div>
+                </div>
+
+                <div id="project-views-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const closeSidebar = document.getElementById('closeSidebar');
+
+        function openSidebar() {
+            sidebar.classList.add('open');
+            sidebarOverlay.classList.add('active');
+        }
+
+        function closeSidebarFunc() {
+            sidebar.classList.remove('open');
+            sidebarOverlay.classList.remove('active');
+        }
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', openSidebar);
+        }
+        if (closeSidebar) {
+            closeSidebar.addEventListener('click', closeSidebarFunc);
+        }
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', closeSidebarFunc);
+        }
+
+        // Close sidebar when a nav item is clicked (mobile)
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    closeSidebarFunc();
+                }
+            });
+        });
+
+        // Store project views
+        const projectViews = {};
+
+        function loadProject(url, pageId) {
+            if (!url) return;
+
+            const loadingEl = document.getElementById('loading');
+            loadingEl.classList.add('active');
+            document.getElementById('dashboard-view').classList.add('hide');
+
+            let projectView = projectViews[pageId];
+            if (!projectView) {
+                projectView = document.createElement('div');
+                projectView.className = 'project-view';
+                projectView.setAttribute('data-page', pageId);
+                
+                const iframe = document.createElement('iframe');
+                iframe.className = 'project-iframe';
+                iframe.src = url;
+                
+                projectView.appendChild(iframe);
+                document.getElementById('project-views-container').appendChild(projectView);
+                projectViews[pageId] = projectView;
+                
+                iframe.onload = function() {
+                    loadingEl.classList.remove('active');
+                    projectView.classList.add('active');
+                };
+                
+                iframe.onerror = function() {
+                    loadingEl.classList.remove('active');
+                    alert('✨ Could not load the project. Make sure it\'s accessible.');
+                };
+            } else {
+                loadingEl.classList.remove('active');
+                projectView.classList.add('active');
+            }
+            
+            Object.values(projectViews).forEach(view => {
+                if (view !== projectView) view.classList.remove('active');
+            });
+        }
+
+        function showDashboard() {
+            Object.values(projectViews).forEach(view => view.classList.remove('active'));
+            document.getElementById('loading').classList.remove('active');
+            document.getElementById('dashboard-view').classList.remove('hide');
+        }
+
+        function updateTimestamp() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            document.getElementById('timestamp').innerHTML = now.toLocaleDateString('en-US', options);
+        }
+        updateTimestamp();
+        setInterval(updateTimestamp, 60000);
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                if (this.classList.contains('inactive')) {
+                    alert('✨ coming soon — this feature is under development.');
+                    return;
+                }
+                
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+                
+                const page = this.getAttribute('data-page');
+                const url = this.getAttribute('data-url');
+                
+                if (page === 'dashboard' || !url) {
+                    showDashboard();
+                } else {
+                    loadProject(url, page);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

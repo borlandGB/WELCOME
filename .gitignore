@@ -1,0 +1,37 @@
+# Protect irrigation folder completely
+irrigation/
+/irrigation
+irrigation/*
+
+# Protect password files
+.htpasswd
+*.htpasswd
+
+# Protect sensitive configs
+.env
+*.key
+*.pem
+*.crt
+
+# Protect backup files
+*.backup
+*.old
+*.save
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
